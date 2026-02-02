@@ -1,22 +1,15 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useVoice } from '../context/VoiceContext';
-import { FileText, Users, Map, Eye, LogOut } from 'lucide-react';
+import { FileText, Users, Map, Eye } from 'lucide-react';
 
 const Home = () => {
     const { speak } = useVoice();
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     useEffect(() => {
         speak("Welcome. Please say a command like 'Go to Form', or 'Read Sign'.");
     }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        navigate('/login');
-        speak("Logged out successfully");
-    };
 
     const modules = [
         { name: 'Voice Form', path: '/form', icon: <FileText size={48} />, color: '#00ff9d', voiceCommand: 'Go to Form' },
@@ -27,33 +20,9 @@ const Home = () => {
 
     return (
         <div className="container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1 className="hc-text" style={{ fontSize: '3rem', marginBottom: 0 }}>
-                    Voice Assistant
-                </h1>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <span className="hc-text" style={{ fontSize: '0.9rem', color: '#aaa' }}>
-                        {user.email}
-                    </span>
-                    <button
-                        onClick={handleLogout}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            background: '#ff0055',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            fontSize: '0.9rem'
-                        }}
-                    >
-                        <LogOut size={18} /> Logout
-                    </button>
-                </div>
-            </div>
+            <h1 className="hc-text" style={{ fontSize: '3rem', marginBottom: '2rem' }}>
+                Voice Assistant
+            </h1>
 
             <div style={{
                 display: 'grid',

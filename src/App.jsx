@@ -2,10 +2,8 @@ import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useVoice } from './context/VoiceContext';
 import VoiceVisualizer from './components/VoiceVisualizer';
-import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
-import Login from './pages/Login';
 import Home from './pages/Home';
 import VoiceForm from './pages/VoiceForm';
 import QueueStatus from './pages/QueueStatus';
@@ -91,32 +89,11 @@ const App = () => {
 
       <div style={{ paddingBottom: '100px' }}>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
-          <Route path="/form" element={
-            <ProtectedRoute>
-              <VoiceForm />
-            </ProtectedRoute>
-          } />
-          <Route path="/queue" element={
-            <ProtectedRoute>
-              <QueueStatus />
-            </ProtectedRoute>
-          } />
-          <Route path="/qr" element={
-            <ProtectedRoute>
-              <QRNavigation />
-            </ProtectedRoute>
-          } />
-          <Route path="/signs" element={
-            <ProtectedRoute>
-              <SignReader />
-            </ProtectedRoute>
-          } />
+          <Route path="/" element={<Home />} />
+          <Route path="/form" element={<VoiceForm />} />
+          <Route path="/queue" element={<QueueStatus />} />
+          <Route path="/qr" element={<QRNavigation />} />
+          <Route path="/signs" element={<SignReader />} />
         </Routes>
       </div>
 
