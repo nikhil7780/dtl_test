@@ -1,8 +1,9 @@
-# Deployment Guide - Voice Assistant App
+# Deployment Guide - Voice Assistant App (Vercel Only)
+
+Deploy both frontend and backend to **Vercel** using serverless Python functions. No Railway needed!
 
 ## Prerequisites
 - GitHub account
-- Railway account (railway.app)
 - Vercel account (vercel.com)
 
 ## Step 1: Push Code to GitHub
@@ -10,40 +11,11 @@
 ```powershell
 # From your project directory
 git add .
-git commit -m "Prepare for deployment"
+git commit -m "Prepare for Vercel deployment"
 git push origin main
 ```
 
-## Step 2: Deploy Backend to Railway
-
-1. Go to [railway.app](https://railway.app)
-2. Sign up/Login with GitHub
-3. Click "New Project"
-4. Select "Deploy from GitHub repo"
-5. Choose your repository
-6. Railway will auto-detect it's a Python project
-7. Go to Settings → Variables
-8. Add environment variable:
-   - Name: `GENAI_API_KEY`
-   - Value: `AIzaSyAoQfUFFo00nu_nWU5mb6CtDcq5cu25YME`
-9. Your backend URL will be shown (e.g., `https://your-app-backend.railway.app`)
-
-## Step 3: Update Frontend with Backend URL
-
-1. Edit `.env.production`:
-   ```
-   VITE_API_URL=https://your-app-backend.railway.app
-   ```
-   (Replace with your actual Railway backend URL)
-
-2. Commit and push:
-   ```powershell
-   git add .env.production
-   git commit -m "Update backend URL for production"
-   git push origin main
-   ```
-
-## Step 4: Deploy Frontend to Vercel
+## Step 2: Deploy to Vercel
 
 1. Install Vercel CLI:
    ```powershell
@@ -56,18 +28,37 @@ git push origin main
    vercel
    ```
 
-3. Follow prompts:
-   - Connect to GitHub
-   - Select your project
-   - Framework: Vite
-   - Build command: `npm run build`
-   - Output directory: `dist`
+3. Follow the prompts:
+   - **Project name**: Choose a name for your app
+   - **Framework**: Select "Vite"
+   - **Build command**: `npm run build`
+   - **Output directory**: `dist`
+   - **Root directory**: `.` (current directory)
 
-4. Vercel will give you a public URL
+4. When asked about environment variables, **say NO** for now - we'll add them in the dashboard
 
-## Step 5: Test Deployment
+## Step 3: Add API Key to Vercel Dashboard
 
-1. Open your Vercel URL
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Select your project
+3. Go to **Settings** → **Environment Variables**
+4. Click **Add New**
+   - **Name**: `GENAI_API_KEY`
+   - **Value**: `AIzaSyAoQfUFFo00nu_nWU5mb6CtDcq5cu25YME`
+   - **Environments**: Select "Production", "Preview", "Development"
+5. Click **Save**
+
+## Step 4: Redeploy to Apply Environment Variables
+
+```powershell
+vercel --prod
+```
+
+Or redeploy from the dashboard: Go to **Deployments** → Click the latest deployment → **Redeploy**
+
+## Step 5: Test Your Deployment
+
+1. Open your Vercel URL (shown in terminal or dashboard)
 2. Click "Tap to Start"
 3. Allow microphone permission
 4. Test voice commands:
@@ -78,19 +69,32 @@ git push origin main
 
 ## Troubleshooting
 
-### Backend not responding
-- Check Railway logs: Project → Deployments → View logs
-- Verify GENAI_API_KEY is set
+### API not responding / 404 errors
+- Check Vercel logs: Dashboard → **Deployments** → click latest → **Logs** tab
+- Verify `GENAI_API_KEY` is set in **Settings → Environment Variables**
+- Try redeploying: `vercel --prod`
+
+### Environment variable not working
+- Go to **Settings → Environment Variables**
+- Delete and re-add `GENAI_API_KEY`
+- Redeploy: `vercel --prod`
 
 ### Frontend can't reach backend
-- Check browser console (F12)
-- Ensure `.env.production` has correct backend URL
-- Verify CORS is enabled in backend (already enabled)
+- This shouldn't happen since they're on same domain
+- Check browser console (F12) for network errors
+- Verify `/api/` endpoints in Vercel logs
 
 ### Voice not working
 - Check microphone permissions in browser
-- Try Web Speech API on Chrome/Edge
+- Try on Chrome/Edge (best support)
 - Mobile Safari: uses audio upload mode
+
+## How It Works
+
+- **Frontend code** (React) lives in `src/` and `public/`
+- **Backend code** (Python Flask) lives in `api/index.py` as a serverless function
+- **Vercel automatically routes**: `/api/*` calls go to `api/index.py`
+- **Environment variables**: Managed entirely in Vercel dashboard
 
 ## Sharing with Others
 
@@ -100,12 +104,10 @@ Share this link with anyone to use your Voice Assistant!
 
 ## Cost
 
-- **Vercel**: Free tier (up to 100 deployments/month)
-- **Railway**: Free tier ($5/month credit, usually enough)
+- **Vercel**: Free tier (100 deployments/month, unlimited serverless function executions)
 - **Gemini API**: First 50 requests/day free, then paid
 
 ## Support
 
-For issues with deployment:
-- Railway docs: https://docs.railway.app
 - Vercel docs: https://vercel.com/docs
+- Gemini API docs: https://ai.google.dev

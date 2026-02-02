@@ -57,9 +57,8 @@ export const VoiceProvider = ({ children }) => {
 
             setStatus("Sending to server...");
             
-            // Build API URL with environment variable support
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const endpoint = `${apiUrl}/api/transcribe`;
+            // Use relative path - works on both localhost and production
+            const endpoint = '/api/transcribe';
             
             const response = await fetch(endpoint, {
                 method: 'POST',
