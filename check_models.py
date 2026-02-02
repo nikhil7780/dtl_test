@@ -1,15 +1,17 @@
-
 import os
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    print("Warning: python-dotenv not installed. Trying to read GENAI_API_KEY from environment only.")
+
 api_key = os.environ.get("GENAI_API_KEY")
 
 if not api_key:
-    # prompt user if not in env for test
-    print("No key found in env")
-    exit()
+    print("No key found in env. Please set GENAI_API_KEY environment variable.")
+    exit(1)
 
 url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
 try:
@@ -23,4 +25,4 @@ try:
     else:
         print(f"Error: {response.status_code} {response.text}")
 except Exception as e:
-    print(e)
+    print(f"Error: {e}")

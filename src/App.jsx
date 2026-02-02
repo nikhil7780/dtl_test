@@ -21,23 +21,33 @@ const App = () => {
     // We check the transcript coming from Context
     const lower = transcript.toLowerCase();
 
+    console.log("=== APP.JSX DEBUG ===");
+    console.log("Transcript:", transcript);
+    console.log("Listening:", listening);
+    console.log("Status:", status);
+
     if (lower.includes('go to form') || lower.includes('open form')) {
+      console.log("✓ Detected: Go to Form");
       resetTranscript();
       speak("Opening Voice Form");
       navigate('/form');
     } else if (lower.includes('go to token')) {
+      console.log("✓ Detected: Go to Token");
       resetTranscript();
       speak("Opening Token System");
       navigate('/queue');
     } else if (lower.includes('go to map') || lower.includes('navigation')) {
+      console.log("✓ Detected: Go to Map");
       resetTranscript();
       speak("Opening Navigation System");
       navigate('/qr');
     } else if (lower.includes('read sign') || lower.includes('open reader')) {
+      console.log("✓ Detected: Read Sign");
       resetTranscript();
       speak("Opening Sign Reader");
       navigate('/signs');
     } else if (lower.includes('go home') || lower.includes('main menu') || lower.includes('go to home')) {
+      console.log("✓ Detected: Go Home");
       resetTranscript();
       speak("Going to Main Menu");
       navigate('/');

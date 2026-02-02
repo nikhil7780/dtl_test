@@ -5,13 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: true, // Allow all hosts for tunneling (ngrok)
-    host: true, // Expose to network
+    allowedHosts: true,
+    host: '0.0.0.0',
+    port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: process.env.VITE_API_URL || 'http://localhost:5000',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, ''), // Don't rewrite, backend now handles /api
       }
     }
   }

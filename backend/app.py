@@ -88,20 +88,32 @@ def transcribe_endpoint():
         # Read file bytes directly from memory
         audio_bytes = audio_file.read()
         
+        if len(audio_bytes) < 1000:
+            return jsonify({'error': 'Audio too short'}), 400
+        
         # Base64 encode
         audio_b64 = base64.b64encode(audio_bytes).decode('utf-8')
         
-        print("Transcribing audio (Direct API)...")
+        print(f"Transcribing audio: {audio_file.filename} ({len(audio_bytes)} bytes)")
         
-        # Determine mime type (default to audio/wav, but browser sends webm usually)
+        # Determine mime type from filename
         mime_type = "audio/webm"
-        if audio_file.filename.endswith('.webm'):
+        filename = audio_file.filename.lower()
+        if filename.endswith('.webm'):
             mime_type = "audio/webm"
-        elif audio_file.filename.endswith('.mp4'):
-             mime_type = "audio/mp4"
+        elif filename.endswith('.mp4') or filename.endswith('.m4a'):
+            mime_type = "audio/mp4"
+        elif filename.endswith('.wav'):
+            mime_type = "audio/wav"
+        elif filename.endswith('.ogg'):
+            mime_type = "audio/ogg"
+        elif filename.endswith('.flac'):
+            mime_type = "audio/flac"
         
-        # Build prompt
-        prompt = "Listen to this audio commands and transcribe exactly what is said. Output ONLY the text."
+        print(f"Detected mime type: {mime_type}")
+        
+        # Build prompt for better transcription
+        prompt = "Transcribe this audio command. Output ONLY the spoken text, nothing else. Be concise."
         content_parts = [{
             "inline_data": {
                 "mime_type": mime_type,
@@ -112,6 +124,7 @@ def transcribe_endpoint():
         text, error = call_gemini_api(prompt, content_parts)
         
         if error:
+            print(f"Transcription error: {error}")
             return jsonify({'error': error}), 500
             
         print(f"Transcription: {text}")
