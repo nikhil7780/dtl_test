@@ -56,8 +56,12 @@ export const VoiceProvider = ({ children }) => {
             formData.append('audio', blob, `command.${ext}`);
 
             setStatus("Sending to server...");
-            // Use relative path - proxy will route to correct backend
-            const response = await fetch('/api/transcribe', {
+            
+            // Build API URL with environment variable support
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const endpoint = `${apiUrl}/api/transcribe`;
+            
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 body: formData
             });

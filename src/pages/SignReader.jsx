@@ -42,11 +42,16 @@ const SignReader = () => {
         speak("Analyzing...");
 
         try {
-            // Remove data URI header if present, but backend handles it too
+            // Remove data URI header if present
             const base64Image = imageSrc.split(',')[1];
 
-            // Use our secure backend endpoint
-            const response = await fetch('/api/analyze_sign', {
+            // Build API URL with environment variable support
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const endpoint = `${apiUrl}/api/analyze_sign`;
+            
+            console.log("Sending to:", endpoint);
+
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,8 +67,8 @@ const SignReader = () => {
                     return;
                 }
                 const errData = await response.text();
-                // console.error("API Error:", errData);
-                speak("Connection error. Please check your internet.");
+                console.error("API Error:", errData);
+                speak("Connection error. Please check your internet and backend server.");
                 return;
             }
 
@@ -80,7 +85,7 @@ const SignReader = () => {
             }
         } catch (err) {
             console.error("Scanning Error:", err);
-            speak("Scanning failed. Please try again.");
+            speak("Scanning failed. Please make sure the backend server is running.");
         } finally {
             setProcessing(false);
         }
