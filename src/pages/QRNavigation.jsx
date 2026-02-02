@@ -3,17 +3,30 @@ import { Html5Qrcode } from 'html5-qrcode';
 import { useVoice } from '../context/VoiceContext';
 
 const NAV_DATA = {
-    "QR_01": "Move right 1 step and walk down 8 steps infront of you.",
-    "QR_02": "Turn left and move forward 2 steps to access the 3rd QR.",
-    "QR_03": "Turn left and walk down 8 steps infront of you to reach floor 1 and turn right.",
-    "QR_04": "Turn left, walk straight 3 steps, turn left and walk straight 4 steps to reach entrance of room 1.",
-    // Room Navigation
-    "ROOM_1": "Room 1 is directly ahead. Walk straight 5 steps. Turn right at the corner. Room 1 is on your left. Entrance is 2 steps ahead.",
-    "ROOM_2": "Room 2 is to your right. Turn right and walk 3 steps. Room 2 entrance is on your right side.",
-    "ROOM_3": "Room 3 is further ahead. Walk straight 8 steps. Turn left at the end of the corridor. Room 3 is 3 steps ahead on your right.",
-    "ROOM_4": "Room 4 is on the same floor. Walk straight 6 steps, then turn right. Room 4 entrance is ahead on your left.",
-    "ROOM_5": "Room 5 is upstairs. Find the elevator or staircase ahead. Go up one floor. Turn left and walk 4 steps. Room 5 is on your right.",
-    "ROOM_6": "Room 6 is in the east wing. Walk straight to the end of this corridor. Turn right. Room 6 entrance is 5 steps ahead on your right."
+    // Main Entry Point
+    "QR_START": "Welcome to the Hospital. You are at the entrance. Move forward and scan the next QR code at the main junction.",
+    
+    // Main Junction - First Decision Point
+    "QR_MAIN_1": "You are at the main junction. You can go to rooms 1 and 3 on your left, rooms 2 and 4 on your right, or room 5 upstairs. Say which room you want to visit.",
+    
+    // Left Side Junctions
+    "QR_ROOM_1": "You are heading to rooms 1 and 3. Room 1 is on your immediate left. Room 3 is further ahead. Walk 3 steps forward.",
+    "QR_ROOM_3": "You are near room 3. Walk 2 steps forward and turn left. Room 3 entrance is 1 step ahead on your left.",
+    
+    // Right Side Junctions
+    "QR_ROOM_4": "You are heading to rooms 2 and 4. Room 4 is ahead. Walk forward 3 steps. Room 4 entrance is on your right.",
+    "QR_ROOM_2": "You are near room 2. Turn right and walk 2 steps. Room 2 entrance is on your right side.",
+    
+    // Main Upper Junction
+    "QR_MAIN_2": "You are at the upper main junction. Room 5 is ahead. Walk forward 4 steps. Room 5 entrance is on your right.",
+    "QR_ROOM_5": "You have reached room 5. The entrance is 1 step ahead on your right.",
+    
+    // Room Navigation Details
+    "ROOM_1": "Room 1 destination reached. This is a general ward. Walk straight and the registration desk is ahead on your left.",
+    "ROOM_2": "Room 2 destination reached. This is the outpatient clinic. Enter through the door ahead.",
+    "ROOM_3": "Room 3 destination reached. This is the emergency ward. Walk in and report to the reception.",
+    "ROOM_4": "Room 4 destination reached. This is the operation theater. Check in at the window ahead.",
+    "ROOM_5": "Room 5 destination reached. This is the intensive care unit. Follow the staff member ahead."
 };
 
 const QRNavigation = () => {
@@ -175,17 +188,16 @@ const QRNavigation = () => {
 
                     {/* Simulation Controls for Demo */}
                     <div className="mt-8 border-t border-gray-700 pt-4">
-                        <h4 className="mb-2 text-sm text-gray-500">Test QR Codes:</h4>
+                        <h4 className="mb-2 text-sm text-gray-500">Hospital Map - Test QR Codes:</h4>
                         <div className="flex flex-wrap gap-2 justify-center">
-                            {Object.keys(NAV_DATA).filter(k => k.startsWith('QR')).map(key => (
-                                <button
-                                    key={key}
-                                    onClick={() => simulateScan(key)}
-                                    className="px-3 py-1 bg-gray-700 rounded hover:bg-white hover:text-black text-xs"
-                                >
-                                    {key}
-                                </button>
-                            ))}
+                            <button onClick={() => simulateScan("QR_START")} className="px-3 py-1 bg-green-600 rounded hover:bg-green-400 text-white text-xs font-bold">Entrance</button>
+                            <button onClick={() => simulateScan("QR_MAIN_1")} className="px-3 py-1 bg-blue-600 rounded hover:bg-blue-400 text-white text-xs font-bold">M1 Main</button>
+                            <button onClick={() => simulateScan("QR_ROOM_1")} className="px-3 py-1 bg-purple-600 rounded hover:bg-purple-400 text-white text-xs font-bold">R1</button>
+                            <button onClick={() => simulateScan("QR_ROOM_3")} className="px-3 py-1 bg-purple-600 rounded hover:bg-purple-400 text-white text-xs font-bold">R3</button>
+                            <button onClick={() => simulateScan("QR_ROOM_2")} className="px-3 py-1 bg-orange-600 rounded hover:bg-orange-400 text-white text-xs font-bold">R2 Junc</button>
+                            <button onClick={() => simulateScan("QR_ROOM_4")} className="px-3 py-1 bg-orange-600 rounded hover:bg-orange-400 text-white text-xs font-bold">R4 Junc</button>
+                            <button onClick={() => simulateScan("QR_MAIN_2")} className="px-3 py-1 bg-blue-600 rounded hover:bg-blue-400 text-white text-xs font-bold">M2</button>
+                            <button onClick={() => simulateScan("QR_ROOM_5")} className="px-3 py-1 bg-purple-600 rounded hover:bg-purple-400 text-white text-xs font-bold">R5</button>
                         </div>
                     </div>
                 </div>

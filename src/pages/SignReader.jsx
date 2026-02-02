@@ -45,9 +45,8 @@ const SignReader = () => {
             // Remove data URI header if present
             const base64Image = imageSrc.split(',')[1];
 
-            // Build API URL with environment variable support
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const endpoint = `${apiUrl}/api/analyze_sign`;
+            // Use relative path - works on both localhost and production
+            const endpoint = '/api/analyze_sign';
             
             console.log("Sending to:", endpoint);
 

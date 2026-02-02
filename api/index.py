@@ -122,10 +122,8 @@ def analyze_sign_endpoint():
         if not image_data:
             return jsonify({'error': 'No image data provided'}), 400
 
-        if ',' in image_data:
-            header, encoded = image_data.split(',', 1)
-        else:
-            encoded = image_data
+        # The image_data is already base64 without the data URI prefix
+        encoded = image_data
             
         print("Analyzing sign with Gemini...")
         

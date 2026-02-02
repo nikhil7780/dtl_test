@@ -44,7 +44,7 @@ git push origin main
 3. Go to **Settings** → **Environment Variables**
 4. Click **Add New**
    - **Name**: `GENAI_API_KEY`
-   - **Value**: `AIzaSyAoQfUFFo00nu_nWU5mb6CtDcq5cu25YME`
+   - **Value**: `AIzaSyB3vT3lgqtN0_-2nFoNVsRY_mMgUfV11j4`
    - **Environments**: Select "Production", "Preview", "Development"
 5. Click **Save**
 
